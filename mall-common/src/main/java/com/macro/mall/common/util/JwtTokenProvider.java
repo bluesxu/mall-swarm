@@ -98,6 +98,21 @@ public class JwtTokenProvider {
     }
 
     /**
+     * 一次性解析令牌中的所有用户信息，避免重复解析
+     */
+    public record TokenInfo(Long userId, String username, String userType, List<String> permissions) {}
+
+    public TokenInfo parseTokenInfo(String token) {
+        Claims claims = parseClaims(token);
+        Long userId = Long.parseLong(claims.getSubject());
+        String username = claims.get("username", String.class);
+        String userType = claims.get("userType", String.class);
+        @SuppressWarnings("unchecked")
+        List<String> permissions = claims.get("permissions", List.class);
+        return new TokenInfo(userId, username, userType, permissions);
+    }
+
+    /**
      * 获取令牌过期时间（秒）
      */
     public long getExpiration() {

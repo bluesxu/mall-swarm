@@ -17,11 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.*;
 
@@ -124,9 +123,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
     @Override
     public UmsMember getCurrentMember() {
-        // 从SecurityContext中获取用户ID（由JwtAuthenticationFilter设置）
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UmsMember member = memberCacheService.getMember(userId);
         if (member == null) {
             member = getById(userId);
@@ -169,13 +166,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
     @Override
     public void logout() {
-        // 获取当前用户ID并清除缓存
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
-        if (userId != null) {
-            memberCacheService.delMember(userId);
-        }
-        // JWT无状态，无需服务端登出操作
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        memberCacheService.delMember(userId);
     }
 
     //对输入的验证码进行校验

@@ -3,13 +3,8 @@ package com.macro.mall.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
-import cn.hutool.extra.spring.SpringUtil;
-import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;
-import com.macro.mall.common.api.CommonResult;
-import com.macro.mall.common.api.ResultCode;
 import com.macro.mall.common.constant.AuthConstant;
-import com.macro.mall.common.dto.UserDto;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.util.JwtTokenProvider;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
@@ -26,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -237,9 +233,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public UmsAdmin getCurrentAdmin() {
-        // 从SecurityContext中获取用户ID（由JwtAuthenticationFilter设置）
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UmsAdmin admin = adminCacheService.getAdmin(userId);
         if (admin == null) {
             admin = adminMapper.selectByPrimaryKey(userId);
@@ -250,12 +244,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public void logout() {
-        // 获取当前用户ID并清除缓存
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
-        if (userId != null) {
-            adminCacheService.delAdmin(userId);
-        }
-        // JWT无状态，无需服务端登出操作
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        adminCacheService.delAdmin(userId);
     }
 }

@@ -21,14 +21,4 @@ public class JwtProperties {
      * JWT过期时间（秒），默认7天
      */
     private long expiration = 604800;
-
-    /**
-     * HTTP请求头名称
-     */
-    private String headerName = "Authorization";
-
-    /**
-     * JWT令牌前缀
-     */
-    private String tokenPrefix = "Bearer ";
 }
