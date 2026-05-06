@@ -1,0 +1,175 @@
+<mxfile host="65bd71144e">
+    <diagram id="mall-swarm-arch" name="系统架构图">
+        <mxGraphModel dx="1887" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="mall-swarm 微服务电商系统架构图" style="text;html=1;fontSize=22;fontStyle=1;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="20" width="800" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="client-box" value="客户端" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=5;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="70" width="800" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="browser" value="浏览器 / APP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="100" width="300" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="nginx-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="180" width="800" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="nginx-box-title" value="代理层" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="182" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="nginx" value="&lt;b&gt;Nginx&lt;/b&gt;&lt;br&gt;静态资源 + 反向代理 :80" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="198" width="300" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="gw-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="280" width="800" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="gw-box-title" value="网关层" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="282" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="gateway" value="&lt;b&gt;Spring Cloud Gateway&lt;/b&gt;&lt;br&gt;路由转发 + Sa-Token 鉴权 + 限流 :8201" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="298" width="300" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="380" width="1400" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-box-title" value="微服务层" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="382" width="70" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="auth" value="&lt;b&gt;mall-auth&lt;/b&gt;&lt;br&gt;认证服务&lt;br&gt;:8401" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="130" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="admin" value="&lt;b&gt;mall-admin&lt;/b&gt;&lt;br&gt;后台管理&lt;br&gt;:8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="portal" value="&lt;b&gt;mall-portal&lt;/b&gt;&lt;br&gt;前台门户&lt;br&gt;:8085" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="search" value="&lt;b&gt;mall-search&lt;/b&gt;&lt;br&gt;搜索服务&lt;br&gt;:8083" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="monitor" value="&lt;b&gt;mall-monitor&lt;/b&gt;&lt;br&gt;监控服务&lt;br&gt;:8101" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="890" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="demo" value="&lt;b&gt;mall-demo&lt;/b&gt;&lt;br&gt;示例服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1080" y="405" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="feign-label" value="OpenFeign 服务间调用" style="text;html=1;fontSize=10;fontStyle=2;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1270" y="420" width="120" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="nacos-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="510" width="1400" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="nacos-box-title" value="注册与配置" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="512" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="nacos" value="&lt;b&gt;Nacos&lt;/b&gt;  服务注册 + 配置中心 :8848" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=0;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="528" width="400" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="data-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="610" width="1400" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="data-box-title" value="数据层" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="612" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="mysql" value="&lt;b&gt;MySQL 5.7&lt;/b&gt;&lt;br&gt;主数据库 :3306" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="130" y="635" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="redis" value="&lt;b&gt;Redis 7.0&lt;/b&gt;&lt;br&gt;缓存+会话 :6379" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="635" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="es" value="&lt;b&gt;Elasticsearch 7.17&lt;/b&gt;&lt;br&gt;商品搜索 :9200" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="635" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="mongodb" value="&lt;b&gt;MongoDB 5.0&lt;/b&gt;&lt;br&gt;文档存储 :27017" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="635" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="rabbitmq" value="&lt;b&gt;RabbitMQ 3.10&lt;/b&gt;&lt;br&gt;异步消息 :5672" style="shape=queue;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="860" y="635" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="oss" value="&lt;b&gt;对象存储&lt;/b&gt;&lt;br&gt;MinIO / 阿里云OSS" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="635" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="alipay" value="&lt;b&gt;支付宝 SDK&lt;/b&gt;&lt;br&gt;支付接口" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1220" y="635" width="120" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="elk-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="740" width="1400" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="elk-box-title" value="日志监控" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="742" width="70" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="logstash" value="&lt;b&gt;Logstash&lt;/b&gt; 日志收集 :4560" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="758" width="200" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="kibana" value="&lt;b&gt;Kibana&lt;/b&gt; 日志可视化 :5601" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="758" width="200" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="spring-admin" value="&lt;b&gt;Spring Boot Admin&lt;/b&gt; 服务监控 :8101" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1100" y="758" width="250" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;arcSize=8;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="840" width="1400" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech-title" value="技术栈" style="text;html=1;fontSize=14;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="842" width="60" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech1" value="&lt;b&gt;核心框架&lt;/b&gt;&lt;br&gt;Java 17 + Spring Boot 3.2.2&lt;br&gt;Spring Cloud 2023.0.1&lt;br&gt;Spring Cloud Alibaba 2023.0.1.0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="130" y="875" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech2" value="&lt;b&gt;认证&lt;/b&gt;&lt;br&gt;Sa-Token 1.37.0 + JWT&lt;br&gt;&lt;b&gt;文档&lt;/b&gt;&lt;br&gt;Knife4j 4.5.0 (OpenAPI3)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="875" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech3" value="&lt;b&gt;ORM&lt;/b&gt;&lt;br&gt;MyBatis 3.5.14 + Druid 1.2.9&lt;br&gt;PageHelper 6.1.0&lt;br&gt;&lt;b&gt;工具&lt;/b&gt;&lt;br&gt;Hutool 5.8.16 + Lombok" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="630" y="875" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech4" value="&lt;b&gt;部署&lt;/b&gt;&lt;br&gt;Docker (fabric8 插件)&lt;br&gt;Kubernetes&lt;br&gt;&lt;b&gt;日志&lt;/b&gt;&lt;br&gt;ELK + logstash-logback-encoder" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="875" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech5" value="&lt;b&gt;监控&lt;/b&gt;&lt;br&gt;Spring Boot Admin 3.2.2&lt;br&gt;Actuator&lt;br&gt;&lt;b&gt;负载均衡&lt;/b&gt;&lt;br&gt;Spring Cloud LoadBalancer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="1130" y="875" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="browser" target="nginx" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="/api/*" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#333333;fontStyle=1;fontSize=11;" parent="1" source="nginx" target="gateway" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#82B366;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="gateway" target="auth" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#82B366;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="gateway" target="admin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#82B366;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="gateway" target="portal" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#82B366;exitX=0.65;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="gateway" target="search" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" value="注册/发现" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=2;strokeColor=#b85450;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="admin" target="nacos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#6c8ebf;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="admin" target="mysql" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#6c8ebf;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="portal" target="redis" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#6c8ebf;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="search" target="es" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e11" value="日志" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#D79B00;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="search" target="logstash" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#D79B00;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="logstash" target="es" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e13" value="监控" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeWidth=1.5;strokeColor=#D79B00;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="monitor" target="spring-admin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
