@@ -1,12 +1,12 @@
 package com.macro.mall.service;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.dto.UpdateAdminPasswordParam;
 import com.macro.mall.model.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台管理员Service
@@ -28,7 +28,7 @@ public interface UmsAdminService {
      * @param username 用户名
      * @param password 密码
      */
-    SaTokenInfo login(String username, String password);
+    Map<String, String> login(String username, String password);
 
     /**
      * 根据用户id获取用户

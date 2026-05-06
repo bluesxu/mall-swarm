@@ -52,13 +52,23 @@ public interface AuthConstant {
     String USER_TOKEN_HEADER = "user";
 
     /**
-     * sa-token session中存储的会员信息
+     * 网关向下传递的用户ID请求头
      */
-    String STP_MEMBER_INFO = "memberInfo";
+    String USER_ID_HEADER = "X-User-Id";
 
     /**
-     * sa-token session中存储的后台管理员信息
+     * 网关向下传递的用户类型请求头
      */
-    String STP_ADMIN_INFO = "adminInfo";
+    String USER_TYPE_HEADER = "X-User-Type";
+
+    /**
+     * 网关向下传递的用户名请求头
+     */
+    String USERNAME_HEADER = "X-Username";
+
+    /**
+     * 网关向下传递的用户权限请求头
+     */
+    String PERMISSIONS_HEADER = "X-User-Permissions";
 
 }

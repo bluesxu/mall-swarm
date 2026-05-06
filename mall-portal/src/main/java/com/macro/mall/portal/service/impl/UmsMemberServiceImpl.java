@@ -1,11 +1,10 @@
 package com.macro.mall.portal.service.impl;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.macro.mall.common.constant.AuthConstant;
-import com.macro.mall.common.dto.UserDto;
 import com.macro.mall.common.exception.Asserts;
+import com.macro.mall.common.util.JwtTokenProvider;
 import com.macro.mall.mapper.UmsMemberLevelMapper;
 import com.macro.mall.mapper.UmsMemberMapper;
 import com.macro.mall.model.UmsMember;
@@ -14,7 +13,6 @@ import com.macro.mall.model.UmsMemberLevel;
 import com.macro.mall.model.UmsMemberLevelExample;
 import com.macro.mall.portal.service.UmsMemberCacheService;
 import com.macro.mall.portal.service.UmsMemberService;
-import com.macro.mall.portal.util.StpMemberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 会员管理Service实现类
@@ -40,6 +38,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private UmsMemberLevelMapper memberLevelMapper;
     @Autowired
     private UmsMemberCacheService memberCacheService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     @Value("${redis.key.authCode}")
     private String REDIS_KEY_PREFIX_AUTH_CODE;
     @Value("${redis.expire.authCode}")
@@ -124,15 +124,15 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
     @Override
     public UmsMember getCurrentMember() {
-        UserDto userDto = (UserDto) StpMemberUtil.getSession().get(AuthConstant.STP_MEMBER_INFO);
-        UmsMember member = memberCacheService.getMember(userDto.getId());
-        if(member!=null){
-            return member;
-        }else{
-            member = getById(userDto.getId());
+        // 从SecurityContext中获取用户ID（由JwtAuthenticationFilter设置）
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        UmsMember member = memberCacheService.getMember(userId);
+        if (member == null) {
+            member = getById(userId);
             memberCacheService.setMember(member);
-            return member;
         }
+        return member;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public SaTokenInfo login(String username, String password) {
+    public Map<String, String> login(String username, String password) {
         if(StrUtil.isEmpty(username)||StrUtil.isEmpty(password)){
             Asserts.fail("用户名或密码不能为空！");
         }
@@ -159,25 +159,23 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         if(member.getStatus()!=1){
             Asserts.fail("该账号已被禁用！");
         }
-        // 登录校验成功后，一行代码实现登录
-        StpMemberUtil.login(member.getId());
-        UserDto userDto = new UserDto();
-        userDto.setId(member.getId());
-        userDto.setUsername(member.getUsername());
-        userDto.setClientId(AuthConstant.PORTAL_CLIENT_ID);
-        // 将用户信息存储到Session中
-        StpMemberUtil.getSession().set(AuthConstant.STP_MEMBER_INFO,userDto);
-        // 获取当前登录用户Token信息
-        return StpMemberUtil.getTokenInfo();
+        // 生成JWT令牌
+        String token = jwtTokenProvider.generateToken(member.getId(), member.getUsername(), "member", null);
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", AuthConstant.JWT_TOKEN_PREFIX);
+        return tokenMap;
     }
 
     @Override
     public void logout() {
-        //先清空缓存
-        UserDto userDto = (UserDto) StpMemberUtil.getSession().get(AuthConstant.STP_MEMBER_INFO);
-        memberCacheService.delMember(userDto.getId());
-        //再调用sa-token的登出方法
-        StpMemberUtil.logout();
+        // 获取当前用户ID并清除缓存
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        if (userId != null) {
+            memberCacheService.delMember(userId);
+        }
+        // JWT无状态，无需服务端登出操作
     }
 
     //对输入的验证码进行校验

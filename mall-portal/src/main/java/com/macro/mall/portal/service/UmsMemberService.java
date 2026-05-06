@@ -1,8 +1,9 @@
 package com.macro.mall.portal.service;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
 import com.macro.mall.model.UmsMember;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * 会员管理Service
@@ -49,7 +50,7 @@ public interface UmsMemberService {
     /**
      * 登录后获取token
      */
-    SaTokenInfo login(String username, String password);
+    Map<String, String> login(String username, String password);
 
     /**
      * 登出功能

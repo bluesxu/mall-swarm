@@ -1,7 +1,5 @@
 package com.macro.mall.service.impl;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
@@ -13,6 +11,7 @@ import com.macro.mall.common.api.ResultCode;
 import com.macro.mall.common.constant.AuthConstant;
 import com.macro.mall.common.dto.UserDto;
 import com.macro.mall.common.exception.Asserts;
+import com.macro.mall.common.util.JwtTokenProvider;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.dto.UpdateAdminPasswordParam;
@@ -53,6 +52,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminLoginLogMapper loginLogMapper;
     @Autowired
     private UmsAdminCacheService adminCacheService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -86,7 +87,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public SaTokenInfo login(String username, String password) {
+    public Map<String, String> login(String username, String password) {
         if(StrUtil.isEmpty(username)||StrUtil.isEmpty(password)){
             Asserts.fail("用户名或密码不能为空！");
         }
@@ -100,22 +101,15 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         if(admin.getStatus()!=1){
             Asserts.fail("该账号已被禁用！");
         }
-        // 登录校验成功后，一行代码实现登录
-        StpUtil.login(admin.getId());
-        UserDto userDto = new UserDto();
-        userDto.setId(admin.getId());
-        userDto.setUsername(admin.getUsername());
-        userDto.setClientId(AuthConstant.ADMIN_CLIENT_ID);
         List<UmsResource> resourceList = getResourceList(admin.getId());
         List<String> permissionList = resourceList.stream().map(item -> item.getId() + ":" + item.getName()).toList();
-        userDto.setPermissionList(permissionList);
-        // 将用户信息存储到Session中
-        StpUtil.getSession().set(AuthConstant.STP_ADMIN_INFO,userDto);
-        // 获取当前登录用户Token信息
-        SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
-//        updateLoginTimeByUsername(username);
+        // 生成JWT令牌
+        String token = jwtTokenProvider.generateToken(admin.getId(), admin.getUsername(), "admin", permissionList);
         insertLoginLog(admin);
-        return saTokenInfo;
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", AuthConstant.JWT_TOKEN_PREFIX);
+        return tokenMap;
     }
 
     /**
@@ -243,20 +237,25 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public UmsAdmin getCurrentAdmin() {
-        UserDto userDto = (UserDto) StpUtil.getSession().get(AuthConstant.STP_ADMIN_INFO);
-        UmsAdmin admin = adminCacheService.getAdmin(userDto.getId());
+        // 从SecurityContext中获取用户ID（由JwtAuthenticationFilter设置）
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        UmsAdmin admin = adminCacheService.getAdmin(userId);
         if (admin == null) {
-            admin = adminMapper.selectByPrimaryKey(userDto.getId());
+            admin = adminMapper.selectByPrimaryKey(userId);
             adminCacheService.setAdmin(admin);
         }
         return admin;
     }
+
     @Override
     public void logout() {
-        //先清空缓存
-        UserDto userDto = (UserDto) StpUtil.getSession().get(AuthConstant.STP_ADMIN_INFO);
-        adminCacheService.delAdmin(userDto.getId());
-        //再调用sa-token的登出方法
-        StpUtil.logout();
+        // 获取当前用户ID并清除缓存
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long userId = (Long) attributes.getRequest().getAttribute(AuthConstant.USER_ID_HEADER);
+        if (userId != null) {
+            adminCacheService.delAdmin(userId);
+        }
+        // JWT无状态，无需服务端登出操作
     }
 }
